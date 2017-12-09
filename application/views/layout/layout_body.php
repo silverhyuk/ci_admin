@@ -42,7 +42,7 @@
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-        <?php $this->view($template_name); ?>
+        <?php $this->view($content_name); ?>
     </div>
     <!-- /.content-wrapper -->
 
