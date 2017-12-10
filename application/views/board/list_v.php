@@ -70,6 +70,9 @@
                             <?php
                         }
                         ?>
+                        <tr>
+                            <th colspan="5"><?php echo $pagination;?></th>
+                        </tr>
                     </table>
                 </div>
                 <!-- /.box-body -->

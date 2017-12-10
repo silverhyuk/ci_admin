@@ -1,6 +1,6 @@
 <header class="main-header">
     <!-- Logo -->
-    <a href="template/index2.html" class="logo">
+    <a href="<?=base_url();?>template/index2.html" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini"><b>A</b>LT</span>
         <!-- logo for regular state and mobile devices -->
@@ -21,13 +21,13 @@
                 <!-- User Account: style can be found in dropdown.less -->
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="template/dist/img/if_bitty_bear_blake_37660.png" class="user-image" alt="User Image">
+                        <img src="<?=base_url();?>template/dist/img/if_bitty_bear_blake_37660.png" class="user-image" alt="User Image">
                         <span class="hidden-xs">Silverhyuk</span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
-                            <img src="template/dist/img/if_bitty_bear_blake_37660.png" class="img-circle" alt="User Image">
+                            <img src="<?=base_url();?>template/dist/img/if_bitty_bear_blake_37660.png" class="img-circle" alt="User Image">
 
                             <p>
                                 Silverhyuk - Developer
