@@ -7,6 +7,11 @@
  */
 
 class MY_Loader extends CI_Loader{
+    /**
+     * @param $content_name
+     * @param array $vars
+     * @param bool $return
+     */
     public function template($content_name, $vars=array(), $return=FALSE){
         $layout_header = isset($vars['layout_header']) ? $vars['layout_header'] : 'layout/layout_header';
         $layout_side_menu = isset($vars['layout_side_menu']) ? $vars['layout_side_menu'] : 'layout/layout_side_menu';

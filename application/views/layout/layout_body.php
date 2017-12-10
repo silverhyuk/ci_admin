@@ -42,7 +42,13 @@
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-        <?php $this->view($content_name); ?>
+        <?php
+            if(isset($vars)){
+                $this->view($content_name, $vars);
+            }else{
+                $this->view($content_name);
+            }
+         ?>
     </div>
     <!-- /.content-wrapper -->
 
