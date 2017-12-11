@@ -40,6 +40,21 @@ class Board extends CI_Controller {
         $config['uri_segment'] = 5;
         // 페이지 번호가 위치한 세그먼트
 
+        //페이징 디자인 변경ㄴ
+        $config['full_tag_open'] = '<ul class="pagination pagination-sm no-margin pull-right">';
+        $config['full_tag_close'] = '</ul><!--pagination-->';
+        $config['prev_link'] = '&laquo;';
+        $config['prev_tag_open'] = '<li>';
+        $config['prev_tag_close'] = '</li>';
+        $config['next_link'] = '&raquo;';
+        $config['next_tag_open'] = '<li>';
+        $config['next_tag_close'] = '</li>';
+        $config['num_tag_open'] = '<li>';
+        $config['num_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li><a href="#">';
+        $config['cur_tag_close'] = '</a></li>';
+
+
         // 페이지네이션 초기화
         $this->pagination->initialize($config);
         // 페이지 링크를 생성하여 view에서 사용하 변수에 할당
