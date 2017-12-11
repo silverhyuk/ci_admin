@@ -7,6 +7,32 @@
  */
 
 ?>
+<script>
+    $(document).ready(function () {
+        $("#search_btn").click(function() {
+            if ($("#q").val() == '') {
+                alert("검색어를 입력하세요!");
+                return false;
+            } else {
+                var url = "/bbs/board/lists/ci_board/q/" + $("#q").val() + "/page/1";
+                $("#search_word").val($("#q").val());
+                $("#bd_search").attr('action', url).submit();
+            }
+        });
+    });
+
+    function board_search_enter(form) {
+        var keycode = window.event.keyCode;
+        if (keycode == 13){
+            $("#search_btn").click();
+        }
+
+    }
+</script>
+
+<form id="bd_search" method="post">
+    <input type="hidden" name="search_word"  id="search_word" >
+</form>
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
@@ -33,11 +59,10 @@
 
                     <div class="box-tools">
                         <div class="input-group input-group-sm" style="width: 150px;">
-                            <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
-
-                            <div class="input-group-btn">
-                                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                            </div>
+                                <input type="text" name="table_search" class="form-control pull-right" placeholder="Search" id="q" onkeypress="board_search_enter(document.q);">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-default" id="search_btn" ><i class="fa fa-search"></i></button>
+                                </div>
                         </div>
                     </div>
                 </div>
@@ -62,8 +87,8 @@
                                 <td><?php echo $lt->user_name; ?></td>
                                 <td><?php echo $lt->hits; ?></td>
                                 <td>
-                                    <time datetime="<?php echo mdate("%Y-%M-%j", human_to_unix($lt->reg_date)); ?>">
-                                        <?php echo mdate("%Y-%M-%j", human_to_unix($lt->reg_date)); ?>
+                                    <time datetime="<?php echo mdate("%Y-%m-%d", human_to_unix($lt->reg_date)); ?>">
+                                        <?php echo mdate("%Y-%m-%d", human_to_unix($lt->reg_date)); ?>
                                     </time>
                                 </td>
                             </tr>
