@@ -40,9 +40,9 @@ class Board extends CI_Controller {
         $config['uri_segment'] = 5;
         // 페이지 번호가 위치한 세그먼트
 
-        //페이징 디자인 변경ㄴ
+        //페이징 디자인 변경
         $config['full_tag_open'] = '<ul class="pagination pagination-sm no-margin pull-right">';
-        $config['full_tag_close'] = '</ul><!--pagination-->';
+        $config['full_tag_close'] = '</ul>';
         $config['prev_link'] = '&laquo;';
         $config['prev_tag_open'] = '<li>';
         $config['prev_tag_close'] = '</li>';
@@ -51,7 +51,7 @@ class Board extends CI_Controller {
         $config['next_tag_close'] = '</li>';
         $config['num_tag_open'] = '<li>';
         $config['num_tag_close'] = '</li>';
-        $config['cur_tag_open'] = '<li><a href="#">';
+        $config['cur_tag_open'] = '<li class="active"><a href="#">';
         $config['cur_tag_close'] = '</a></li>';
 
 
