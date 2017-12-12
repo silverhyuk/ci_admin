@@ -9,13 +9,13 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        Blank page
-        <small>it all starts here</small>
+        Board page
+        <small>board</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Examples</a></li>
-        <li class="active">Blank page</li>
+        <li><a href="#">board</a></li>
+        <li class="active">view</li>
     </ol>
 </section>
 
@@ -26,35 +26,34 @@
     <div class="box">
         <div class="box-header with-border">
             <h3 class="box-title"><?php echo $views -> subject;?></h3>
+            <div class="no-margin pull-right text-muted">
+                <?php echo $views -> reg_date;?>
+            </div>
         </div>
         <div class="box-body">
+            <?php echo $views -> user_name;?>
+            <div class="no-margin pull-right text-muted">
+                [<?php echo $views -> hits;?>]
+            </div>
             <table cellspacing="0" cellpadding="0" class="table table-striped">
-                <thead>
                 <tr>
-                    <th scope="col">이름: <?php echo $views -> user_name;?></th>
-                    <th scope="col">조회수: <?php echo $views -> hits;?></th>
-                    <th scope="col">등록일: <?php echo $views -> reg_date;?></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <th colspan="3">
+                    <th colspan="2">
                         <?php echo $views -> contents;?>
                     </th>
                 </tr>
-                </tbody>
-
             </table>
         </div>
         <!-- /.box-body -->
         <div class="box-footer">
-            <a href="/bbs/board/lists/<?php echo $this -> uri -> segment(3); ?>/page/<?php echo $this -> uri -> segment(7); ?>" class="btn  btn-sm btn-primary">목록 </a>
-            <a href="/bbs/board/modify/<?php echo $this -> uri -> segment(3); ?>/board_id/<?php echo $this -> uri -> segment(4); ?>/page/<?php echo $this -> uri -> segment(7); ?>"
-               class="btn btn-sm btn-warning"> 수정 </a>
-            <a href="/bbs/board/delete/<?php echo $this -> uri -> segment(3); ?>/board_id/<?php echo $this -> uri -> segment(5); ?>/page/<?php echo $this -> uri -> segment(7); ?>"
-               class="btn btn-sm btn-danger"> 삭제 </a>
-            <a href="/bbs/board/write/<?php echo $this -> uri -> segment(3); ?>/page/<?php echo $this -> uri -> segment(7); ?>"
-               class="btn btn-sm btn-success">쓰기</a>
+            <div class="no-margin pull-right">
+                <a href="/bbs/board/lists/<?php echo $this -> uri -> segment(3); ?>/page/<?php echo $this -> uri -> segment(7); ?>" class="btn  btn-sm btn-primary">목록 </a>
+                <a href="/bbs/board/modify/<?php echo $this -> uri -> segment(3); ?>/board_id/<?php echo $this -> uri -> segment(4); ?>/page/<?php echo $this -> uri -> segment(7); ?>"
+                   class="btn btn-sm btn-warning"> 수정 </a>
+                <a href="/bbs/board/delete/<?php echo $this -> uri -> segment(3); ?>/board_id/<?php echo $this -> uri -> segment(5); ?>/page/<?php echo $this -> uri -> segment(7); ?>"
+                   class="btn btn-sm btn-danger"> 삭제 </a>
+                <a href="/bbs/board/write/<?php echo $this -> uri -> segment(3); ?>/page/<?php echo $this -> uri -> segment(7); ?>"
+                   class="btn btn-sm btn-success">쓰기</a>
+            </div>
         </div>
         <!-- /.box-footer-->
     </div>
