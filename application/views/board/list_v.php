@@ -95,12 +95,12 @@
                             <?php
                         }
                         ?>
-                        <tr>
-                            <th colspan="5"><?php echo $pagination;?></th>
-                        </tr>
                     </table>
                 </div>
                 <!-- /.box-body -->
+                <div class="box-footer">
+                    <?php echo $pagination;?>
+                </div>
             </div>
             <!-- /.box -->
         </div>

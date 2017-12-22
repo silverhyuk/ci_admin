@@ -103,6 +103,53 @@ class Board extends CI_Controller {
         $this -> load -> template('board/view_v', $data);
     }
 
+    /**
+     * 게시물 수정
+     */
+    function modify() {
+        echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
+
+        if ( $_POST ) {
+            $this -> load -> helper('alert');
+
+            $uri_array = $this->segment_explode($this->uri->uri_string());
+
+            if ( in_array('page', $uri_array)) {
+                $pages = urldecode($this->url_explode($uri_array, 'page'));
+            } else {
+                $pages = 1;
+            }
+
+            if ( $this->input->post('subject', TRUE)===FALSE AND $this->input->post('contents', TRUE)===FALSE) {
+                alert('비정상적인 접근입니다.', '/bbs/board/lists/'.$this->uri->segment(3).'/page/'.$pages);
+
+                exit;
+            }
+
+
+            $modify_data = array(
+                'table' => $this->uri->segment(3),
+                'board_id' => $this->uri->segment(5),
+                'subject' => $this->input->post('subject', TRUE),
+                'contents' => $this->input->post('contents', TRUE)
+            );
+
+            $result = $this->board_m->modify_board($modify_data);
+
+            if ( $result ) {
+
+                alert('수정되었습니다.', '/bbs/board/lists/'.$this->uri->segment(3).'/page/'.$pages);
+                exit;
+            } else {
+                alert('다시 수정해 주세요.', '/bbs/board/view/'.$this->uri->segment(3).'/board_id/'.$this->uri->segment(5).'/page/'.$pages);
+                exit;
+            }
+        } else {
+            $data['views'] = $this->board_m->get_view($this->uri->segment(3), $this->uri->segment(5));
+
+            $this->load->template('board/modify_v', $data);
+        }
+    }
 
 
     /**
