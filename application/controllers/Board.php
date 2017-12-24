@@ -6,7 +6,7 @@
  * Time: 오후 10:44
  */
 
-class Board extends CI_Controller {
+class Board extends MY_controller {
     function __construct() {
         parent::__construct();
         $this -> load -> database();
