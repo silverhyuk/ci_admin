@@ -14,7 +14,7 @@
                 alert("검색어를 입력하세요!");
                 return false;
             } else {
-                var url = "/bbs/board/lists/ci_board/q/" + $("#q").val() + "/page/1";
+                var url ="<?=site_url('/board/lists').'?table=ci_board&search_word=' ?>" + $("#q").val() + "&page=1";
                 $("#search_word").val($("#q").val());
                 $("#bd_search").attr('action', url).submit();
             }
@@ -82,7 +82,7 @@
                             <tr>
                                 <th scope="row"><?php echo $lt->board_id; ?></th>
                                 <td><a rel="external"
-                                       href="/bbs/<?php echo $this->uri->segment(1); ?>/view/<?php echo $this->uri->segment(3); ?>/<?php echo $lt->board_id; ?>"> <?php echo $lt->subject; ?></a>
+                                       href="<?=site_url('/board/view').'?board_id='.$lt->board_id.'&table='.$table.'&per_page='.$per_page;?>"> <?php echo $lt->subject; ?></a>
                                 </td>
                                 <td><?php echo $lt->user_name; ?></td>
                                 <td><?php echo $lt->hits; ?></td>

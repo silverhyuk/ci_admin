@@ -11,13 +11,14 @@ class Board extends CI_Controller {
         parent::__construct();
         $this -> load -> database();
         $this -> load -> model('board_m');
-        $this -> load -> helper(array('url', 'date'));
+        $this -> load -> helper(array('url','date'));
         $this->output->enable_profiler(TRUE);
     }
 
     /**
      * 주소에서 메서드가 생략되었을 때 실행되는 기본 메서드
      * http://127.0.0.1/bbs/board/lists/ci_board/page/5
+     * http://127.0.0.1/bbs/board/lists?table=ci_board
      */
     public function index() {
         $this -> lists();
@@ -29,33 +30,19 @@ class Board extends CI_Controller {
     {
 
         // 검색어 초기화
-        $search_word = $page_url = '';
-        $uri_segment = 5;
-
-        // 주소 중에서 q(검색어) 세그먼트가 있는 지 검사하기 위해 주소를 배열로 반환
-        $uri_array = $this -> segment_explode($this -> uri -> uri_string());
-
-        if (in_array('q', $uri_array)) {
-            // 주소에 검색어가 있을 경우 처리
-            $search_word = urldecode($this -> url_explode($uri_array, 'q'));
-
-            // 페이지네이션 용 주소
-            $page_url = '/q/' . $search_word;
-
-            $uri_segment = 7;
-        }
-
+        $search_word = $this->input->get('search_word');
+        $table = $this->input->get('table');
 
         /*페이지 네이션 설정*/
         $this->load->library('pagination');
         // 페이징 주소
-        $config['base_url'] = '/bbs/board/lists/ci_board'. $page_url .'/page/';
+        $config['base_url'] = site_url('/board/lists').'?table='.$table ;
         // 게시물 전체 개수
-        $config['total_rows'] = $this->board_m->get_list($this->uri->segment(3), 'count', '', '', $search_word);
+        $config['total_rows'] = $this->board_m->get_list($table, 'count', '', '', $search_word);
         // 한 페이지에 표시할 게시물 수
         $config['per_page'] = 5;
         // 페이지 번호가 위치한 세그먼트
-        $config['uri_segment'] = $uri_segment;
+        $config['page_query_string'] = TRUE;
 
 
         //페이징 디자인 변경
@@ -79,15 +66,19 @@ class Board extends CI_Controller {
         $data['pagination'] = $this->pagination->create_links();
 
         // 게시물 목록을 불러오기 위한 offset, limit 값 가져오기
-        $page = $this->uri->segment($uri_segment, 1);
-        if ($page > 1) {
-            $start = (($page / $config['per_page'])) * $config['per_page'];
+        $per_page = $this->input->get('per_page');
+        if($this->input->get('per_page') ===false){
+            $per_page = 1;
+        }
+        if ($per_page > 1) {
+            $start = (($per_page / $config['per_page'])) * $config['per_page'];
         } else {
-            $start = ($page - 1) * $config['per_page'];
+            $start = 0;
         }
         $limit = $config['per_page'];
-        $data['list'] = $this->board_m->get_list($this->uri->segment(3), '', $start, $limit);
-
+        $data['list'] = $this->board_m->get_list($table, '', $start, $limit);
+        $data['table'] = $table;
+        $data['per_page'] = $per_page;
 
         $this->load->template('board/list_v', $data);
     }
@@ -97,7 +88,17 @@ class Board extends CI_Controller {
      */
     function view() {
         // 게시판 이름과 게시물 번호에 해당하는 게시물 가져오기
-        $data['views'] = $this -> board_m -> get_view($this -> uri -> segment(3), $this -> uri -> segment(4));
+
+        $table = $this->input->get('table');
+        $board_id = $this->input->get('board_id');
+        $per_page = $this->input->get('per_page');
+        if($per_page === false){
+            $per_page = 0;
+        }
+        $data['views'] = $this -> board_m -> get_view($table, $board_id);
+        $data['table'] = $table;
+        $data['board_id'] = $board_id;
+        $data['per_page'] = $per_page;
 
         // view 호출
         $this -> load -> template('board/view_v', $data);
@@ -112,24 +113,19 @@ class Board extends CI_Controller {
         if ( $_POST ) {
             $this -> load -> helper('alert');
 
-            $uri_array = $this->segment_explode($this->uri->uri_string());
-
-            if ( in_array('page', $uri_array)) {
-                $pages = urldecode($this->url_explode($uri_array, 'page'));
-            } else {
-                $pages = 1;
-            }
+            $table = $this->input->get('table');
+            $board_id = $this->input->get('board_id');
+            $per_page = $this->input->get('per_page');
 
             if ( $this->input->post('subject', TRUE)===FALSE AND $this->input->post('contents', TRUE)===FALSE) {
-                alert('비정상적인 접근입니다.', '/bbs/board/lists/'.$this->uri->segment(3).'/page/'.$pages);
+                alert('비정상적인 접근입니다.', site_url('/board/lists').'?table='.$table.'&per_page='.$per_page);
 
                 exit;
             }
 
-
             $modify_data = array(
-                'table' => $this->uri->segment(3),
-                'board_id' => $this->uri->segment(5),
+                'table' => $table,
+                'board_id' => $board_id,
                 'subject' => $this->input->post('subject', TRUE),
                 'contents' => $this->input->post('contents', TRUE)
             );
@@ -138,58 +134,18 @@ class Board extends CI_Controller {
 
             if ( $result ) {
 
-                alert('수정되었습니다.', '/bbs/board/lists/'.$this->uri->segment(3).'/page/'.$pages);
+                alert('수정되었습니다.', site_url('/board/lists').'?table='.$table.'&per_page='.$per_page);
                 exit;
             } else {
-                alert('다시 수정해 주세요.', '/bbs/board/view/'.$this->uri->segment(3).'/board_id/'.$this->uri->segment(5).'/page/'.$pages);
+                alert('다시 수정해 주세요.', site_url('/board/lists').'?table='.$table.'&per_page='.$per_page.'&board_id='.$board_id);
                 exit;
             }
         } else {
-            $data['views'] = $this->board_m->get_view($this->uri->segment(3), $this->uri->segment(5));
+            $table = $this->input->get('table');
+            $board_id = $this->input->get('board_id');
+            $data['views'] = $this->board_m->get_view($table, $board_id);
 
             $this->load->template('board/modify_v', $data);
         }
-    }
-
-
-    /**
-     * url 중 키 값을 구분하여 값을 가져오도록
-     *
-     * @param Array $url : segment_explode 한 url 값
-     * @param String $key :  가져오려는 값의 key
-     * @return String $url[$k] : 리턴 값
-     */
-
-    function url_explode($url, $key) {
-        $cnt = count($url);
-
-        for ($i = 0; $cnt > $i; $i++) {
-            if ($url[$i] == $key) {
-                $k = $i + 1;
-                return $url[$k];
-            }
-        }
-    }
-
-    /**
-     * HTTP의 URL을 "/"를 Delimiter로 사용하여 배열로 바꿔 리턴한다.
-     *
-     * @param String 대상이 되는 문자열
-     * @return string[]
-     */
-    function segment_explode($seg) {
-        // 세그먼트 앞 뒤 "/" 제거 후 uri를 배열로 반환
-        $len = strlen($seg);
-
-        if (substr($seg, 0, 1) == '/') {
-            $seg = substr($seg, 1, $len);
-        }
-        $len = strlen($seg);
-
-        if (substr($seg, -1) == '/') {
-            $seg = substr($seg, 0, $len - 1);
-        }
-        $seg_exp = explode("/", $seg);
-        return $seg_exp;
     }
 }
