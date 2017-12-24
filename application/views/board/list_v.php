@@ -11,12 +11,15 @@
     $(document).ready(function () {
         $("#search_btn").click(function() {
             if ($("#q").val() == '') {
-                alert("검색어를 입력하세요!");
-                return false;
+                //alert("검색어를 입력하세요!");
+                //return false;
+                var url ="<?=site_url('/board/lists').'?table=ci_board&page=1' ?>" ;
+                location.href=url;
             } else {
                 var url ="<?=site_url('/board/lists').'?table=ci_board&search_word=' ?>" + $("#q").val() + "&page=1";
-                $("#search_word").val($("#q").val());
-                $("#bd_search").attr('action', url).submit();
+                //$("#search_word").val($("#q").val());
+                //$("#bd_search").attr('action', url).submit();
+                location.href=url;
             }
         });
     });

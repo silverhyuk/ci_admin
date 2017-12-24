@@ -76,7 +76,7 @@ class Board extends MY_controller {
             $start = 0;
         }
         $limit = $config['per_page'];
-        $data['list'] = $this->board_m->get_list($table, '', $start, $limit);
+        $data['list'] = $this->board_m->get_list($table, '', $start, $limit, $search_word);
         $data['table'] = $table;
         $data['per_page'] = $per_page;
 
