@@ -5,7 +5,7 @@ class Auth extends MY_controller {
         parent::__construct();    
     }    
     function login(){
-        $this->load->view('login', array('returnURL'=>$this->input->get('returnURL')));
+        $this->load->view('login_v', array('returnURL'=>$this->input->get('returnURL')));
     }
 
     function logout(){

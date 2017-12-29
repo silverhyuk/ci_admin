@@ -20,6 +20,12 @@
             <ul class="nav navbar-nav">
                 <!-- User Account: style can be found in dropdown.less -->
                 <li class="dropdown user user-menu">
+
+                    <!-- 로그인 되었을때 -->
+                    <?php
+                        if($this->session->userdata('is_login')){
+                    ?>
+
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="<?=base_url();?>template/dist/img/if_bitty_bear_blake_37660.png" class="user-image" alt="User Image">
                         <span class="hidden-xs">Silverhyuk</span>
@@ -55,9 +61,17 @@
                                 <a href="#" class="btn btn-default btn-flat">Profile</a>
                             </div>
                             <div class="pull-right">
-                                <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                <a href="<?=site_url();?>auth/logout" class="btn btn-default btn-flat">Sign out</a>
                             </div>
                         </li>
+                        <?php
+                        } else {
+                            ?>
+                            <li><a href="<?=site_url();?>auth/login">로그인</a></li>
+                            <li><a href="<?=site_url();?>auth/register">회원가입</a></li>
+                            <?php
+                        }
+                        ?>
                     </ul>
                 </li>
             </ul>
