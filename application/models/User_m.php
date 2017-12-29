@@ -2,9 +2,9 @@
 
 /**
  * Created by PhpStorm.
- * User: ÃÖÀºÇõ
+ * User: ìµœì€í˜
  * Date: 2017-12-29
- * Time: ¿ÀÈÄ 2:05
+ * Time: ì˜¤í›„ 2:05
  */
 
 class User_m extends CI_Model {

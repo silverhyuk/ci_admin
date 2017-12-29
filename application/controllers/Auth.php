@@ -30,8 +30,8 @@ class Auth extends MY_controller {
             }
             $hash = password_hash($this->input->post('password'), PASSWORD_BCRYPT);
 
-            $this->load->model('user_model');
-            $this->user_model->add(array(
+            $this->load->model('user_m');
+            $this->user_m->add(array(
                 'email'=>$this->input->post('email'),
                 'password'=>$hash,
                 'nickname'=>$this->input->post('nickname')
@@ -44,8 +44,8 @@ class Auth extends MY_controller {
     }
 
     function authentication(){
-    	$this->load->model('user_model');
-        $user = $this->user_model->getByEmail(array('email'=>$this->input->post('email')));
+    	$this->load->model('user_m');
+        $user = $this->user_m->getByEmail(array('email'=>$this->input->post('email')));
         if(!function_exists('password_hash')){
             $this->load->helper('password');
         }

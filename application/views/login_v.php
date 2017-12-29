@@ -25,6 +25,8 @@
     <!-- iCheck -->
     <link rel="stylesheet" href="<?=base_url();?>template/plugins/iCheck/square/blue.css">
 
+    <link rel="stylesheet" href="<?=base_url();?>template/bower_components/toastr/build/toastr.css">
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -44,7 +46,7 @@
     <div class="login-box-body">
         <p class="login-box-msg">Sign in to start your session</p>
 
-        <form action="<?=base_url();?>template/index2.html" method="post">
+        <form action="<?=site_url('/auth/authentication?returnURL='.rawurlencode($returnURL))?>" method="post">
             <div class="form-group has-feedback">
                 <input id="email" name="email" type="email" class="form-control" placeholder="Email">
                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
@@ -90,6 +92,8 @@
 <script src="<?=base_url();?>template/bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="<?=base_url();?>template/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="<?=base_url();?>template/bower_components/toastr/build/toastr.min.js"></script>
 <!-- iCheck -->
 <script src="<?=base_url();?>template/plugins/iCheck/icheck.min.js"></script>
 <script>
@@ -101,5 +105,25 @@
         });
     });
 </script>
+<?php
+if($this->session->flashdata('message')){
+    ?>
+    <script>
+        toastr.options = {
+            "positionClass": "toast-top-full-width",
+            "showDuration": 300,
+            "hideDuration": 1000,
+            "timeOut": 3000,
+            "extendedTimeOut": 1000,
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+        toastr.info('<?=$this->session->flashdata('message')?>');
+    </script>
+    <?php
+}
+?>
 </body>
 </html>
