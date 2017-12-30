@@ -28,7 +28,7 @@
 
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="<?=base_url();?>template/dist/img/if_bitty_bear_blake_37660.png" class="user-image" alt="User Image">
-                        <span class="hidden-xs">Silverhyuk</span>
+                        <span class="hidden-xs"><?=$this->session->userdata('nick_name');?></span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
@@ -36,8 +36,8 @@
                             <img src="<?=base_url();?>template/dist/img/if_bitty_bear_blake_37660.png" class="img-circle" alt="User Image">
 
                             <p>
-                                Silverhyuk - Developer
-                                <small>Member since Nov. 2017</small>
+                                <?=$this->session->userdata('user_name');?>
+                                <small><?=$this->session->userdata('email');?></small>
                             </p>
                         </li>
                         <!-- Menu Body -->

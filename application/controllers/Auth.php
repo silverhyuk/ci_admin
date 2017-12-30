@@ -25,7 +25,13 @@ class Auth extends MY_controller {
     		$this->input->post('email') == $user->email && 
             password_verify($this->input->post('password'), $user->password)
     	) {
-    		$this->session->set_userdata('is_login', true);
+            $sessionUserArray = array(
+                'is_login'=> true,
+                'user_name'=> $user->username,
+                'nick_name'=> $user->nickname,
+                'email' => $user->email
+            );
+    		$this->session->set_userdata($sessionUserArray);
             $this->session->set_flashdata('message', '로그인에 성공 했습니다.');
 
     		$this->load->helper('url');

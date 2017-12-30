@@ -48,7 +48,11 @@
 
         <form action="<?=base_url();?>register/reg_process" method="post">
             <div class="form-group has-feedback">
-                <input type="text" id="nickname" name="nickname" class="form-control" placeholder="Full name">
+                <input type="text" id="username" name="username" class="form-control" placeholder="이름">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="text" id="nickname" name="nickname" class="form-control" placeholder="닉네임">
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">
