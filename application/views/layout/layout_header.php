@@ -67,8 +67,8 @@
                         <?php
                         } else {
                             ?>
-                            <li><a href="<?=site_url();?>auth/login">로그인</a></li>
-                            <li><a href="<?=site_url();?>register">회원가입</a></li>
+                            <li><a href="<?=site_url('auth/login');?>">로그인</a></li>
+                            <li><a href="<?=site_url('register');?>">회원가입</a></li>
                             <?php
                         }
                         ?>
