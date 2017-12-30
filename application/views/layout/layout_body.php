@@ -9,6 +9,8 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
     <link rel="stylesheet" href="<?=base_url();?>template/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <!-- Toastr  -->
+    <link rel="stylesheet" href="<?=base_url();?>template/bower_components/toastr/build/toastr.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="<?=base_url();?>template/bower_components/font-awesome/css/font-awesome.min.css">
     <!-- Ionicons -->
@@ -33,6 +35,8 @@
     <script src="<?=base_url();?>template/bower_components/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap 3.3.7 -->
     <script src="<?=base_url();?>template/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- Toastr -->
+    <script src="<?=base_url();?>template/bower_components/toastr/build/toastr.min.js"></script>
     <!-- SlimScroll -->
     <script src="<?=base_url();?>template/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
     <!-- FastClick -->
