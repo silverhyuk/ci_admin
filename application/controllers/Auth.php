@@ -3,7 +3,6 @@ class Auth extends MY_controller {
     function __construct()
     {       
         parent::__construct();
-        $config['csrf_protection'] 	= FALSE;
     }
     function login(){
         $this->load->view('login_v', array('returnURL'=>$this->input->get('returnURL')));

@@ -47,6 +47,8 @@
         <p class="login-box-msg">Sign in to start your session</p>
 
         <form action="<?=site_url('/auth/authentication?returnURL='.rawurlencode($returnURL))?>" method="post">
+            <input type="hidden" id="<?= $this->security->get_csrf_token_name(); ?>" name="<?= $this->security->get_csrf_token_name(); ?>"
+                   value="<?= $this->security->get_csrf_hash(); ?>"/>
             <div class="form-group has-feedback">
                 <input id="email" name="email" type="email" class="form-control" placeholder="Email">
                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
