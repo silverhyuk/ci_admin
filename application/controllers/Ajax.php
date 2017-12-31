@@ -5,7 +5,7 @@ class Ajax extends MY_controller
     function __construct()
     {
         parent::__construct();
-        $this->output->enable_profiler(TRUE);
+
     }
     function index(){
         $this->load->view('test/csrf');

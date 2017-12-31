@@ -6,8 +6,12 @@
  * Time: 오후 10:57
  */
 ?>
+
+<!-- CK Editor -->
+<script src="<?=base_url();?>template/bower_components/ckeditor/ckeditor.js"></script>
 <script>
     $(document).ready(function() {
+        CKEDITOR.replace('input02');
         $("#write_btn").click(function() {
             if ($("#input01").val() == '') {
                 alert('제목을 입력해 주세요.');
@@ -46,30 +50,36 @@
         <div class="box-header with-border">
             <h3 class="box-title">게시물 수정</h3>
         </div>
-        <div class="box-body">
-            <form class="form-horizontal" method="post" action="" id="write_action">
+        <form class="form-horizontal" method="post" action="<?=site_url('/board/modify') ?>" id="write_action">
+             <div class="box-body">
+
+                <input type="hidden" id="<?= $this->security->get_csrf_token_name(); ?>" name="<?= $this->security->get_csrf_token_name(); ?>"
+                       value="<?= $this->security->get_csrf_hash(); ?>"/>
+                <input type="hidden" id="table" name="table"  value="<?=$table; ?>" />
+                <input type="hidden" id="board_id" name="board_id"  value="<?=$board_id; ?>" />
                 <fieldset>
                     <div class="control-group">
                         <label class="control-label" for="input01">제목</label>
                         <div class="controls">
-                            <input type="text" class="input-xlarge" id="input01" name="subject"
-                                   value="<?php echo $views->subject; ?>" />
+                            <input type="text" class="form-control" id="input01" name="subject"
+                                   value="<?=$views->subject; ?>" />
                         </div>
                         <label class="control-label" for="input02">내용</label>
                         <div class="controls">
                                 <textarea class="input-xlarge" id="input02" name="contents" rows="5">
-                                    <?php echo $views->contents;?>
+                                    <?=$views->contents;?>
                                 </textarea>
-                        </div>
-
-                        <div class="form-actions">
-                            <button type="submit" class="btn btn-primary" id="write_btn"> 수정 </button>
-                            <button class="btn" onclick="history.back();">취소</button>
                         </div>
                     </div>
                 </fieldset>
-            </form>
-        </div>
+            </div>
+            <div class="box-footer">
+                <div class="no-margin pull-right">
+                    <button type="button" class="btn btn-primary" id="write_btn"> 수정 </button>
+                    <button type="button" class="btn" id="cancel_btn" onclick="history.back();">취소</button>
+                </div>
+            </div>
+        </form>
         <!-- /.box-body -->
         <!--<div class="box-footer">
             Footer

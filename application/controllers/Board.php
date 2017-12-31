@@ -9,10 +9,10 @@
 class Board extends MY_controller {
     function __construct() {
         parent::__construct();
+        parent::_require_login();
         $this -> load -> database();
         $this -> load -> model('board_m');
         $this -> load -> helper(array('url','date'));
-        $this->output->enable_profiler(TRUE);
     }
 
     /**
@@ -21,6 +21,7 @@ class Board extends MY_controller {
      * http://127.0.0.1/bbs/board/lists?table=ci_board
      */
     public function index() {
+
         $this -> lists();
     }
     /**
@@ -110,41 +111,37 @@ class Board extends MY_controller {
     function modify() {
         echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
 
-        if ( $_POST ) {
+        if ( $this->input->post() ) {
             $this -> load -> helper('alert');
-
-            $table = $this->input->get('table');
-            $board_id = $this->input->get('board_id');
-            $per_page = $this->input->get('per_page');
+            $table = $this->input->post('table');
+            $board_id = $this->input->post('board_id');
+            //$per_page = $this->input->get('per_page');
 
             if ( $this->input->post('subject', TRUE)===FALSE AND $this->input->post('contents', TRUE)===FALSE) {
-                alert('비정상적인 접근입니다.', site_url('/board/lists').'?table='.$table.'&per_page='.$per_page);
+                alert('비정상적인 접근입니다.', site_url('/board/lists').'?table='.$table);
 
                 exit;
             }
-
             $modify_data = array(
                 'table' => $table,
                 'board_id' => $board_id,
                 'subject' => $this->input->post('subject', TRUE),
                 'contents' => $this->input->post('contents', TRUE)
             );
-
             $result = $this->board_m->modify_board($modify_data);
-
             if ( $result ) {
-
-                alert('수정되었습니다.', site_url('/board/lists').'?table='.$table.'&per_page='.$per_page);
+                alert('수정되었습니다.', site_url('/board/lists').'?table='.$table);
                 exit;
             } else {
-                alert('다시 수정해 주세요.', site_url('/board/lists').'?table='.$table.'&per_page='.$per_page.'&board_id='.$board_id);
+                alert('다시 수정해 주세요.', site_url('/board/lists').'?table='.$table.'&board_id='.$board_id);
                 exit;
             }
         } else {
             $table = $this->input->get('table');
             $board_id = $this->input->get('board_id');
             $data['views'] = $this->board_m->get_view($table, $board_id);
-
+            $data['table'] = $table;
+            $data['board_id'] = $board_id;
             $this->load->template('board/modify_v', $data);
         }
     }
