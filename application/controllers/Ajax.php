@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Ajax extends MY_controller
+class Ajax extends MY_Controller
 {
     function __construct()
     {

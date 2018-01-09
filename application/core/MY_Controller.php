@@ -6,7 +6,7 @@
  * Time: 오후 10:46
  */
 
-class MY_controller extends CI_Controller {
+class MY_Controller extends CI_Controller {
     function __construct(){
         parent::__construct();
         if($peak = $this->config->item('peak_page_cache')){

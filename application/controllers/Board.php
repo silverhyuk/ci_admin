@@ -6,7 +6,7 @@
  * Time: 오후 10:44
  */
 
-class Board extends MY_controller {
+class Board extends MY_Controller {
     function __construct() {
         parent::__construct();
         parent::_require_login();

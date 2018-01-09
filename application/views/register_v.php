@@ -47,6 +47,8 @@
         <p class="login-box-msg">Register a new membership</p>
 
         <form action="<?=base_url();?>register/reg_process" method="post">
+            <input type="hidden" id="<?= $this->security->get_csrf_token_name(); ?>" name="<?= $this->security->get_csrf_token_name(); ?>"
+                   value="<?= $this->security->get_csrf_hash(); ?>"/>
             <div class="form-group has-feedback">
                 <input type="text" id="username" name="username" class="form-control" placeholder="이름">
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
