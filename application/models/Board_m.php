@@ -73,4 +73,28 @@ class Board_m extends CI_Model {
         return $result;
     }
 
+    /**
+     * 게시물 입력
+     *
+     *
+     * @param array $arrays 테이블명, 게시물제목, 게시물내용, 아이디 1차 배열
+     * @return boolean 입력 성공여부
+     */
+    function insert_board($arrays)
+    {
+        $insert_array = array(
+            'board_id' => 0, //원글이라 0을 입력, 댓글일 경우 원글번호 입력
+            'user_id' => $arrays['user_id'],
+            'user_name' => $arrays['user_name'],
+            'subject' => $arrays['subject'],
+            'contents' => $arrays['contents'],
+            'reg_date' => date("Y-m-d H:i:s")
+        );
+
+        $result = $this->db->insert($arrays['table'], $insert_array);
+
+        //결과 반환
+        return $result;
+    }
+
 }

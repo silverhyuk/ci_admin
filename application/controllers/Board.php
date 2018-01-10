@@ -41,20 +41,26 @@ class Board extends MY_Controller {
         // 게시물 전체 개수
         $config['total_rows'] = $this->board_m->get_list($table, 'count', '', '', $search_word);
         // 한 페이지에 표시할 게시물 수
-        $config['per_page'] = 5;
+        $config['per_page'] = 10;
         // 페이지 번호가 위치한 세그먼트
         $config['page_query_string'] = TRUE;
 
 
         //페이징 디자인 변경
-        $config['full_tag_open'] = '<ul class="pagination pagination-sm no-margin pull-right">';
+        $config['full_tag_open'] = '<ul class="pagination pagination-sm no-margin ">';
         $config['full_tag_close'] = '</ul>';
+        $config['first_link'] = '&laquo;&laquo;';
+        $config['first_tag_open'] = '<li>';
+        $config['first_tag_close'] = '</li>';
         $config['prev_link'] = '&laquo;';
         $config['prev_tag_open'] = '<li>';
         $config['prev_tag_close'] = '</li>';
         $config['next_link'] = '&raquo;';
         $config['next_tag_open'] = '<li>';
         $config['next_tag_close'] = '</li>';
+        $config['last_link'] = '&raquo;&raquo;';
+        $config['last_tag_open'] = '<li>';
+        $config['last_tag_close'] = '</li>';
         $config['num_tag_open'] = '<li>';
         $config['num_tag_close'] = '</li>';
         $config['cur_tag_open'] = '<li class="active"><a href="#">';
@@ -143,6 +149,55 @@ class Board extends MY_Controller {
             $data['table'] = $table;
             $data['board_id'] = $board_id;
             $this->load->template('board/modify_v', $data);
+        }
+    }
+    /**
+     * 게시물 수정
+     */
+    function write() {
+        echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
+
+        if ( $this->input->post() && $this->session->userdata('is_login') === TRUE ) {
+            //폼 검증 라이브러리 로드
+            $this->load->library('form_validation');
+            //폼 검증할 필드와 규칙 사전 정의
+            $this->form_validation->set_rules('subject', '제목', 'required');
+            $this->form_validation->set_rules('contents', '내용', 'required');
+
+            if ( $this->form_validation->run() == TRUE ) {
+
+                $this->load->helper('alert');
+                $table = $this->input->post('table');
+
+                if ($this->input->post('subject', TRUE) === FALSE AND $this->input->post('contents', TRUE) === FALSE) {
+                    alert('비정상적인 접근입니다.', site_url('/board/lists') . '?table=' . $table);
+                    exit;
+                }
+                $write_data = array(
+                    'table' => $table,
+                    'subject' => $this->input->post('subject', TRUE),
+                    'contents' => $this->input->post('contents', TRUE),
+                    'user_id' => $this->session->userdata('nick_name'),
+                    'user_name' => $this->session->userdata('user_name')
+                );
+                $result = $this->board_m->insert_board($write_data);
+                if ($result) {
+                    alert('게시물이 작성 되었습니다.', site_url('/board/lists') . '?table=' . $table);
+                    exit;
+                } else {
+                    alert('다시 작성해 주세요.', site_url('/board/lists') . '?table=' . $table);
+                    exit;
+                }
+            }else{
+                //쓰기폼 view 호출
+                $table = $this->input->get('table');
+                $data['table'] = $table;
+                $this->load->template('board/write_v');
+            }
+        } else {
+            $table = $this->input->get('table');
+            $data['table'] = $table;
+            $this->load->template('board/write_v', $data);
         }
     }
 }

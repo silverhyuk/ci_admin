@@ -99,10 +99,16 @@
                         }
                         ?>
                     </table>
+
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer">
-                    <?php echo $pagination;?>
+                    <div class="text-center">
+                         <?php echo $pagination;?>
+                    </div>
+                    <div class="pull-right">
+                        <a href="<?=site_url('/board/write').'?table='.$table ?>" class="btn btn-primary">쓰기</a>
+                    </div>
                 </div>
             </div>
             <!-- /.box -->
