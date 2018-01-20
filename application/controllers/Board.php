@@ -39,7 +39,7 @@ class Board extends MY_Controller {
         // 페이징 주소
         $config['base_url'] = site_url('/board/lists').'?table='.$table ;
         // 게시물 전체 개수
-        $totalCount = $this->board_m->get_list($table, 'count', '', '', $search_word);
+        $totalCount = $this->board_m->get_total_count($table, $search_word);
         $config['total_rows'] = $totalCount;
         // 한 페이지에 표시할 게시물 수
         $config['per_page'] = 10;

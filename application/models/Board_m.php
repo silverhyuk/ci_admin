@@ -34,6 +34,19 @@ class Board_m extends CI_Model {
         return $result;
     }
 
+    function get_total_count($table = 'ci_board', $search_word = '') {
+        $sword = '';
+        if ($search_word != '') {
+            // 검색어 있을 경우
+            $sword = ' WHERE subject like "%' . $search_word . '%" or contents like "%' . $search_word . '%" ';
+        }
+
+        $sql = "SELECT count(board_id) as total_count FROM " . $table . $sword ;
+        $query = $this -> db -> query($sql);
+        $result = $query->row();
+        return $result->total_count;
+    }
+
     /**
      * 게시물 상세보기 가져오기
      *
