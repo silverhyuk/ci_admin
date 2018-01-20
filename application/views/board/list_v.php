@@ -83,7 +83,7 @@
                         foreach ($list as $lt) {
                             ?>
                             <tr>
-                                <th scope="row"><?php echo $lt->board_id; ?></th>
+                                <th scope="row"><?php echo $last_num--; ?></th>
                                 <td><a rel="external"
                                        href="<?=site_url('/board/view').'?board_id='.$lt->board_id.'&table='.$table.'&per_page='.$per_page;?>"> <?php echo $lt->subject; ?></a>
                                 </td>

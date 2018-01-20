@@ -39,7 +39,8 @@ class Board extends MY_Controller {
         // 페이징 주소
         $config['base_url'] = site_url('/board/lists').'?table='.$table ;
         // 게시물 전체 개수
-        $config['total_rows'] = $this->board_m->get_list($table, 'count', '', '', $search_word);
+        $totalCount = $this->board_m->get_list($table, 'count', '', '', $search_word);
+        $config['total_rows'] = $totalCount;
         // 한 페이지에 표시할 게시물 수
         $config['per_page'] = 10;
         // 페이지 번호가 위치한 세그먼트
@@ -74,8 +75,8 @@ class Board extends MY_Controller {
 
         // 게시물 목록을 불러오기 위한 offset, limit 값 가져오기
         $per_page = $this->input->get('per_page');
-        if($this->input->get('per_page') ===false){
-            $per_page = 1;
+        if(empty($this->input->get('per_page')) === true){
+            $per_page = 0;
         }
         if ($per_page > 1) {
             $start = (($per_page / $config['per_page'])) * $config['per_page'];
@@ -86,6 +87,7 @@ class Board extends MY_Controller {
         $data['list'] = $this->board_m->get_list($table, '', $start, $limit, $search_word);
         $data['table'] = $table;
         $data['per_page'] = $per_page;
+        $data['last_num'] = $totalCount - $per_page;
 
         $this->load->template('board/list_v', $data);
     }
@@ -198,6 +200,42 @@ class Board extends MY_Controller {
             $table = $this->input->get('table');
             $data['table'] = $table;
             $this->load->template('board/write_v', $data);
+        }
+    }
+    /**
+     * 게시물 삭제
+     */
+    function delete()
+    {
+        //경고창 헬퍼 로딩
+        $this->load->helper('alert');
+        echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
+
+        if( @$this->session->userdata('is_login') == TRUE ){
+            //삭제하려는 글의 작성자가 본인인지 검증
+            $table = $this->input->get('table');
+            $board_id = $this->input->get('board_id');
+
+            $writer_id = $this->board_m->writer_check($table, $board_id);
+
+            if( $writer_id->user_id != $this->session->userdata('nick_name') ){
+                alert('본인이 작성한 글이 아닙니다.', site_url('/board/view') . '?table=' . $table . '&board_id='.$board_id);
+                exit;
+            }
+            //게시물 번호에 해당하는 게시물 삭제
+            $return = $this->board_m->delete_content($table, $board_id);
+
+            //게시물 목록으로 돌아가기
+            if ( $return ){
+                //삭제가 성공한 경우
+                alert('삭제되었습니다.', site_url('/board/lists') . '?table=' . $table);
+            }else{
+                //삭제가 실패한 경
+                alert('삭제 실패하였습니다.', site_url('/board/view') . '?table=' . $table . '&board_id='.$board_id);
+            }
+        }else{
+            alert('로그인후 삭제하세요', site_url('/auth/login'));
+            exit;
         }
     }
 }
