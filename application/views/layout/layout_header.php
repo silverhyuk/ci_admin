@@ -36,7 +36,7 @@
                             <img src="<?=base_url();?>template/dist/img/if_bitty_bear_blake_37660.png" class="img-circle" alt="User Image">
 
                             <p>
-                                <?=$this->session->userdata('user_name');?>
+                                <?=$this->session->userdata('user_name');?>(<?=$this->session->userdata('role_name');?>)
                                 <small><?=$this->session->userdata('email');?></small>
                             </p>
                         </li>
