@@ -17,7 +17,7 @@
                 </a>
                 <ul class="treeview-menu">
                     <li><a href="#"><i class="fa fa-circle-o"></i>오늘의 식당선택</a></li>
-                    <li class="active"><a href="<?/*=site_url('/board/lists').'?table=ci_board' */?>"><i class="fa fa-circle-o"></i> board</a></li>
+                    <li class="active"><a href="<?=site_url('/board/lists').'?table=ci_board' ?>"><i class="fa fa-circle-o"></i> board</a></li>
                 </ul>
             </li>
             <li class="header">SYSTEM ADMIN</li>
