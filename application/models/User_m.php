@@ -61,7 +61,20 @@ class User_m extends CI_Model {
             // 페이징이 있을 경우 처리
             $limit_query = ' LIMIT ' . $offset . ', ' . $limit;
         }
-        $sql = "SELECT * FROM ci_user ORDER BY reg_date DESC " . $limit_query;
+        $sql = $sql = "SELECT usr.user_id, ";
+        $sql .= "usr.user_name,  ";
+        $sql .= "usr.nick_name,  ";
+        $sql .= "usr.email,  ";
+        $sql .= "usr.password,  ";
+        $sql .= "usr.role_id,  ";
+        $sql .= "usr.reg_date, ";
+        $sql .= "rol.role_id,  ";
+        $sql .= "rol.role_name,  ";
+        $sql .= "rol.role_type  ";
+        $sql .= "FROM ci_user AS usr ";
+        $sql .= " LEFT JOIN ci_role AS rol ";
+        $sql .= " ON usr.role_id =  rol.role_id " ;
+        $sql .= " ORDER BY reg_date DESC " . $limit_query;
         $query = $this -> db -> query($sql);
         $result = $query -> result();
         return $result;

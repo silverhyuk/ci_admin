@@ -1,14 +1,14 @@
-<?php  $roleType = $this->session->userdata('role_name'); ?>
+<?php  $roleType = $this->session->userdata('role_type'); ?>
 <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
-    <section class="sidebar">
+    <section id="side-menu" class="sidebar">
 
 
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">MAIN NAVIGATION</li>
-            <li><a href="#"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
-            <li class="treeview  active">
+            <li id="menu_00" class=""><a href="<?=site_url('/') ?>"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
+            <li id="menu_01" class="treeview">
                 <a href="#">
                     <i class="fa fa-book"></i> <span>선택</span>
                     <span class="pull-right-container">
@@ -16,12 +16,13 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="#"><i class="fa fa-circle-o"></i>오늘의 식당선택</a></li>
-                    <li class="active"><a href="<?=site_url('/board/lists').'?table=ci_board' ?>"><i class="fa fa-circle-o"></i> board</a></li>
+                    <li id="menu_01_01"><a href="#"><i class="fa fa-circle-o"></i>오늘의 식당선택</a></li>
+                    <li id="menu_01_02"><a href="<?=site_url('/board/lists').'?table=ci_board' ?>"><i class="fa fa-circle-o"></i> board</a></li>
                 </ul>
             </li>
+            <?php if($roleType=='ADMIN' || $roleType=='SUPER_ADMIN'){ ?>
             <li class="header">SYSTEM ADMIN</li>
-            <li class="treeview">
+            <li id="menu_02" class="treeview">
                 <a href="#">
                     <i class="fa fa-folder"></i> <span>시스템관리</span>
                     <span class="pull-right-container">
@@ -29,11 +30,11 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="#"><i class="fa fa-circle-o"></i> 사용자관리</a></li>
-                    <li><a href="#"><i class="fa fa-circle-o"></i> 식당관리</a></li>
+                    <li id="menu_02_01"><a href="<?=site_url('/user/lists')?>"><i class="fa fa-circle-o"></i> 사용자관리</a></li>
+                    <li id="menu_02_01"><a href="#"><i class="fa fa-circle-o"></i> 식당관리</a></li>
                 </ul>
             </li>
-            
+            <?php } ?>
             <!--<li class="treeview active">
                 <a href="#">
                     <i class="fa fa-folder"></i> <span>Examples</span>
