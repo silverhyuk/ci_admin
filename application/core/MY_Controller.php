@@ -19,7 +19,7 @@ class MY_Controller extends CI_Controller {
             $this->load->library('session');
         }
         $this->load->driver('cache', array('adapter' => 'file'));
-        $this->output->enable_profiler(TRUE);
+        $this->output->enable_profiler(FALSE);
     }
     function _require_login($return_url=null){
         // 로그인이 되어 있지 않다면 로그인 페이지로 리다이렉션

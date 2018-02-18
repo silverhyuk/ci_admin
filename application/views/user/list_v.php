@@ -30,6 +30,22 @@
                 location.href=url;
             }
         });
+        $("#write_form_btn").on(
+            "click",
+            function(){
+                //alert("pop");
+                /* $("#writeForm").validate().resetForm(); */
+                $("#writeForm").prop("action","<?=site_url('/user/write')?>");
+                $("#writeForm")[0].reset();
+
+                $("#writeFormTitle").text('사용자 등록');
+                $('#write_submit_btn').text("등록");
+                $('#writeContainer').modal();
+            }
+        );
+        $("#write_submit_btn").on('click', function(e) {
+            submitAjax();
+        });
     });
 
     function user_search_enter(form) {
@@ -37,7 +53,78 @@
         if (keycode == 13){
             $("#search_btn").click();
         }
+    }
+    function submitAjax(){
+        var formData = $("#writeForm").serialize();
+        var actionUrl = $("#writeForm").prop("action");
+        $.ajax({
+            type: "POST",
+            url: actionUrl,
+            dataType:"json",
+            cache: false,
+            data: formData,
+            success: function(data){
+                alert(data.result);
 
+                if(data.result == "S"){
+                    /*if(actionUrl.indexOf("Write")>-1){
+                        toastr["success"]("등록되었습니다.", "성공");
+
+                    }else if(actionUrl.indexOf("Modify")>-1){
+                        toastr["success"]("수정되었습니다.", "성공");
+                    }*/
+
+                    //  /lunch/user/lists 새로고침
+                     window.location.reload();
+
+                }else if(data.result == "F")  {
+                    toastr["error"]("실패했습니다.", "실패");
+                }
+            },
+            error: function(request,status,error)
+            {
+                alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            },
+            complete: function(){
+                //$('#writeContainer').modal('toggle');
+
+            }
+        });
+    }
+    function modifyForm(userSeqId){
+        $.ajax({
+            type: "POST",
+            url: "<?=site_url('/user/view')?>",
+            dataType:"json",
+            cache: false,
+            data: "user_id=" + userSeqId,
+            success: function(data){
+                //alert(JSON.stringify(data));
+                /* $('#writeForm').validate().resetForm(); */
+                $("#writeForm").prop("action","<?=site_url('/user/modify')?>");
+                $("#writeForm")[0].reset();
+
+                var result = data.result;
+                if($("#writeForm input[name='user_id']").length == 0){
+                    $("#writeForm").prepend("<input type=\"hidden\" name=\"user_id\" />");
+                }
+                $("#writeForm input[name='user_id']").val(userSeqId);
+                $("#writeForm input[name='user_name']").val(result.user_name);
+                $("#writeForm input[name='nick_name']").val(result.nick_name);
+                /* $("#writeForm select[name='roleId'] option:eq("+result.roleId+")").attr("selected", "selected"); */
+                $("#writeForm select[name='role_id']").val(result.role_id);
+            },
+            error: function(request,status,error)
+            {
+                swal("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            },
+            complete: function(){
+
+            }
+        });
+        $('#writeFormTitle').text("사용자 수정");
+        $('#write_submit_btn').text("수정");
+        $('#writeContainer').modal();
     }
 </script>
 
@@ -68,7 +155,7 @@
                 <div class="box-header">
                     <!--<h3 class="box-title">Table</h3>-->
                     <div class="pull-left">
-                        <a href="<?=site_url('/user/write')?>" class="btn btn-primary"><i class="fa fa-save"></i>  등록</a>
+                        <button id="write_form_btn" class="btn btn-primary"><i class="fa fa-save"></i>  등록</button>
                     </div>
                     <div class="box-tools">
                         <div class="input-group input-group-sm" style="width: 150px;">
@@ -103,7 +190,7 @@
                                         <?php echo mdate("%Y-%m-%d", human_to_unix($lt->reg_date)); ?>
                                     </time>
                                 </td>
-                                <td><button  class="btn btn-default"><i class="fa fa-edit"></i></button></td>
+                                <td><button  class="btn btn-default" onclick="javascript:modifyForm(<?php echo $lt->user_id; ?>);"><i class="fa fa-edit"></i></button></td>
                             </tr>
                             <?php
                         }
@@ -125,3 +212,56 @@
 
 </section>
 <!-- /.content -->
+
+<div id="writeContainer" class="modal fade" id="modal-default">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form name="writeForm" id="writeForm" action="<?=site_url('/user/write')?>" method="post" >
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"><span id="writeFormTitle">사용자 등록</span></h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="<?= $this->security->get_csrf_token_name(); ?>" name="<?= $this->security->get_csrf_token_name(); ?>"
+                           value="<?= $this->security->get_csrf_hash(); ?>"/>
+                    <div class="form-group has-feedback">
+                        <input type="text" id="user_name" name="user_name" class="form-control" placeholder="이름">
+                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="text" id="nick_name" name="nick_name" class="form-control" placeholder="닉네임">
+                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="email" id="email" name="email"  class="form-control" placeholder="Email">
+                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="password" id="password" name="password"  class="form-control" placeholder="Password">
+                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="password" id="re_password" name="re_password" class="form-control" placeholder="Retype password">
+                        <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>권한선택</label>
+                        <select class="form-control" name='role_id'>
+                            <option value='1'>ADMIN(슈퍼어드민)</option>
+                            <option value='2'>MANAGER(관리자)</option>
+                            <option value='3'>USER(사용자)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">닫기</button>
+                    <button id="write_submit_btn" type="button" class="btn btn-primary">등록</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

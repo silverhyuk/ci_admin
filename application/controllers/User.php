@@ -109,7 +109,7 @@ class User extends MY_Controller {
      * 게시물 수정
      */
     function modify() {
-        echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
+        //echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
 
         if ( $this->input->post() ) {
             $this -> load -> helper('alert');
@@ -149,49 +149,41 @@ class User extends MY_Controller {
      * 게시물 수정
      */
     function write() {
-        echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
+        //echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
 
         if ( $this->input->post() && $this->session->userdata('is_login') === TRUE ) {
             //폼 검증 라이브러리 로드
             $this->load->library('form_validation');
             //폼 검증할 필드와 규칙 사전 정의
-            $this->form_validation->set_rules('subject', '제목', 'required');
-            $this->form_validation->set_rules('contents', '내용', 'required');
+            $this->form_validation->set_rules('email', '이메일 주소', 'required|valid_email|is_unique[ci_user.email]');
+            $this->form_validation->set_rules('user_name', '이름', 'required|min_length[3]|max_length[20]');
+            $this->form_validation->set_rules('nick_name', '닉네임', 'required|min_length[3]|max_length[20]|is_unique[ci_user.nick_name]');
+            $this->form_validation->set_rules('password', '비밀번호', 'required|min_length[6]|max_length[30]|matches[re_password]');
+            $this->form_validation->set_rules('re_password', '비밀번호 확인', 'required');
 
-            if ( $this->form_validation->run() == TRUE ) {
-
-                $this->load->helper('alert');
-                $table = $this->input->post('table');
-
-                if ($this->input->post('subject', TRUE) === FALSE AND $this->input->post('contents', TRUE) === FALSE) {
-                    alert('비정상적인 접근입니다.', site_url('/user/lists') . '?table=' . $table);
-                    exit;
+            if($this->form_validation->run() === false){
+                $this->session->set_flashdata('message', '등록에 실패했습니다.');
+                echo json_encode (array('result'=>'F')) ;
+            } else {
+                if(!function_exists('password_hash')){
+                    $this->load->helper('password');
                 }
-                $write_data = array(
-                    'table' => $table,
-                    'subject' => $this->input->post('subject', TRUE),
-                    'contents' => $this->input->post('contents', TRUE),
-                    'user_id' => $this->session->userdata('nick_name'),
-                    'user_name' => $this->session->userdata('user_name')
-                );
-                $result = $this->user_m->insert_user($write_data);
-                if ($result) {
-                    alert('게시물이 작성 되었습니다.', site_url('/user/lists') . '?table=' . $table);
-                    exit;
-                } else {
-                    alert('다시 작성해 주세요.', site_url('/user/lists') . '?table=' . $table);
-                    exit;
-                }
-            }else{
-                //쓰기폼 view 호출
-                $table = $this->input->get('table');
-                $data['table'] = $table;
-                $this->load->template('user/write_v');
+                $hash = password_hash($this->input->post('password'), PASSWORD_BCRYPT);
+
+                $this->load->model('user_m');
+                $this->user_m->add(array(
+                    'user_name'=>$this->input->post('user_name'),
+                    'email'=>$this->input->post('email'),
+                    'password'=>$hash,
+                    'nick_name'=>$this->input->post('nick_name'),
+                    'role_id'=>$this->input->post('role_id'),
+                ));
+
+                $this->session->set_flashdata('message', '등록에 성공했습니다.');
+                echo json_encode (array('result'=>'S')) ;
             }
         } else {
-            $table = $this->input->get('table');
-            $data['table'] = $table;
-            $this->load->template('user/write_v', $data);
+            echo json_encode (array('result'=>'F')) ;
         }
     }
     /**
