@@ -8,6 +8,7 @@
 
 class User extends MY_Controller {
     function __construct() {
+
         parent::__construct();
         parent::_require_admin();
         $this -> load -> database();
@@ -90,59 +91,59 @@ class User extends MY_Controller {
     function view() {
         // 게시판 이름과 게시물 번호에 해당하는 게시물 가져오기
 
-        $table = $this->input->get('table');
         $user_id = $this->input->get('user_id');
-        $per_page = $this->input->get('per_page');
-        if($per_page === false){
-            $per_page = 0;
-        }
-        $data['views'] = $this -> user_m -> get_view($table, $user_id);
-        $data['table'] = $table;
-        $data['user_id'] = $user_id;
-        $data['per_page'] = $per_page;
-
-        // view 호출
-        $this -> load -> template('user/view_v', $data);
+        log_message('debug', '$user_id : '. $user_id);
+        $data = $this -> user_m -> get_view($user_id);
+        echo json_encode (array('result'=> $data)) ;
     }
 
     /**
      * 게시물 수정
      */
     function modify() {
-        //echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
 
-        if ( $this->input->post() ) {
-            $this -> load -> helper('alert');
-            $table = $this->input->post('table');
-            $user_id = $this->input->post('user_id');
-            //$per_page = $this->input->get('per_page');
+        if ( $this->input->post() && $this->session->userdata('is_login') === TRUE ) {
+            //폼 검증 라이브러리 로드
+            $this->load->library('form_validation');
+            //폼 검증할 필드와 규칙 사전 정의
+            $this->form_validation->set_rules('email', '이메일 주소', 'required|valid_email');
+            $this->form_validation->set_rules('user_name', '이름', 'required|min_length[3]|max_length[20]');
+            $this->form_validation->set_rules('nick_name', '닉네임', 'required|min_length[3]|max_length[20]');
+            $this->form_validation->set_rules('password', '비밀번호', 'required|min_length[6]|max_length[30]|matches[re_password]');
+            $this->form_validation->set_rules('re_password', '비밀번호 확인', 'required');
+            $this->form_validation->set_rules('role_id', '권한', 'required');
 
-            if ( $this->input->post('subject', TRUE)===FALSE AND $this->input->post('contents', TRUE)===FALSE) {
-                alert('비정상적인 접근입니다.', site_url('/user/lists').'?table='.$table);
-
-                exit;
-            }
-            $modify_data = array(
-                'table' => $table,
-                'user_id' => $user_id,
-                'subject' => $this->input->post('subject', TRUE),
-                'contents' => $this->input->post('contents', TRUE)
-            );
-            $result = $this->user_m->modify_user($modify_data);
-            if ( $result ) {
-                alert('수정되었습니다.', site_url('/user/lists').'?table='.$table);
-                exit;
+            if($this->form_validation->run() === false){
+                $this->session->set_flashdata('message', '수정에 실패했습니다.');
+                echo json_encode (array('result'=>'F')) ;
             } else {
-                alert('다시 수정해 주세요.', site_url('/user/lists').'?table='.$table.'&user_id='.$user_id);
-                exit;
+                if(!function_exists('password_hash')){
+                    $this->load->helper('password');
+                }
+                $hash = password_hash($this->input->post('password'), PASSWORD_BCRYPT);
+
+                $this->load->model('user_m');
+                $modify_data = array(
+                    'user_id' => $this->input->post('user_id', TRUE),
+                    'password' => $hash,
+                    'email' => $this->input->post('email', TRUE),
+                    'user_name' => $this->input->post('user_name', TRUE),
+                    'nick_name' => $this->input->post('nick_name', TRUE),
+                    'role_id' => $this->input->post('role_id', TRUE)
+                );
+                $result = $this->user_m->modify_user($modify_data);
+
+                if($result){
+                    $this->session->set_flashdata('message', '수정에 성공했습니다.');
+                    echo json_encode (array('result'=>'S')) ;
+                }else{
+                    $this->session->set_flashdata('message', '수정에 실패했습니다.');
+                    echo json_encode (array('result'=>'F')) ;
+                }
+
             }
         } else {
-            $table = $this->input->get('table');
-            $user_id = $this->input->get('user_id');
-            $data['views'] = $this->user_m->get_view($table, $user_id);
-            $data['table'] = $table;
-            $data['user_id'] = $user_id;
-            $this->load->template('user/modify_v', $data);
+            echo json_encode (array('result'=>'F')) ;
         }
     }
     /**

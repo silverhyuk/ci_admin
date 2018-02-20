@@ -5,7 +5,8 @@
  * Date: 2017-12-09
  * Time: 오후 10:57
  */
-
+$token_name = $this->security->get_csrf_token_name();
+$token_hash = $this->security->get_csrf_hash();
 ?>
 <script>
     $(document).ready(function () {
@@ -34,7 +35,7 @@
             "click",
             function(){
                 //alert("pop");
-                /* $("#writeForm").validate().resetForm(); */
+                $("#writeForm").validate().resetForm();
                 $("#writeForm").prop("action","<?=site_url('/user/write')?>");
                 $("#writeForm")[0].reset();
 
@@ -46,6 +47,84 @@
         $("#write_submit_btn").on('click', function(e) {
             submitAjax();
         });
+        $( "#writeForm" ).validate( {
+            rules: {
+                user_name: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 20
+                },
+                nick_name: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 20
+                },
+                password: {
+                    required: true,
+                    minlength: 6,
+                    maxlength: 30
+                },
+                re_password: {
+                    required: true,
+                    minlength: 6,
+                    equalTo: "#password"
+                },
+                email: {
+                    required: true,
+                    email: true
+                },
+                role_id: "required"
+            },
+            messages: {
+                user_name: {
+                    required: "Please enter a username",
+                    minlength: "Your username must consist of at least 2 characters",
+                    maxlength: "Your username must consist of max 30 characters"
+                },
+                nick_name: {
+                    required: "Please enter a username",
+                    minlength: "Your username must consist of at least 2 characters",
+                    maxlength: "Your username must consist of max 30 characters"
+                },
+                password: {
+                    required: "Please provide a password",
+                    minlength: "Your password must be at least 5 characters long"
+                },
+                re_password: {
+                    required: "Please provide a password",
+                    minlength: "Your password must be at least 5 characters long",
+                    equalTo: "Please enter the same password as above"
+                },
+                email: "Please enter a valid email address",
+                role_id: "Please accept our policy"
+            },
+            submitHandler: function() {
+                var formData = $("#writeForm").serialize();
+                var actionUrl = $("#writeForm").prop("action");
+                $.ajax({
+                    type: "POST",
+                    url: actionUrl,
+                    dataType:"json",
+                    cache: false,
+                    data: formData,
+                    success: function(data){
+                        if(data.result == "S"){
+                            window.location.reload();
+                        }else if(data.result == "F")  {
+                            toastr["error"]("실패했습니다.", "실패");
+                        }
+                    },
+                    error: function(request,status,error)
+                    {
+                        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                    },
+                    complete: function(){
+                        window.location.reload();
+
+                    }
+                });
+            }
+        } );
     });
 
     function user_search_enter(form) {
@@ -55,55 +134,19 @@
         }
     }
     function submitAjax(){
-        var formData = $("#writeForm").serialize();
-        var actionUrl = $("#writeForm").prop("action");
-        $.ajax({
-            type: "POST",
-            url: actionUrl,
-            dataType:"json",
-            cache: false,
-            data: formData,
-            success: function(data){
-                alert(data.result);
-
-                if(data.result == "S"){
-                    /*if(actionUrl.indexOf("Write")>-1){
-                        toastr["success"]("등록되었습니다.", "성공");
-
-                    }else if(actionUrl.indexOf("Modify")>-1){
-                        toastr["success"]("수정되었습니다.", "성공");
-                    }*/
-
-                    //  /lunch/user/lists 새로고침
-                     window.location.reload();
-
-                }else if(data.result == "F")  {
-                    toastr["error"]("실패했습니다.", "실패");
-                }
-            },
-            error: function(request,status,error)
-            {
-                alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-            },
-            complete: function(){
-                //$('#writeContainer').modal('toggle');
-
-            }
-        });
+        $("#writeForm").submit();
     }
     function modifyForm(userSeqId){
+        $("#writeForm").validate().resetForm();
         $.ajax({
-            type: "POST",
+            type: "GET",
             url: "<?=site_url('/user/view')?>",
             dataType:"json",
             cache: false,
             data: "user_id=" + userSeqId,
             success: function(data){
-                //alert(JSON.stringify(data));
-                /* $('#writeForm').validate().resetForm(); */
                 $("#writeForm").prop("action","<?=site_url('/user/modify')?>");
                 $("#writeForm")[0].reset();
-
                 var result = data.result;
                 if($("#writeForm input[name='user_id']").length == 0){
                     $("#writeForm").prepend("<input type=\"hidden\" name=\"user_id\" />");
@@ -111,12 +154,15 @@
                 $("#writeForm input[name='user_id']").val(userSeqId);
                 $("#writeForm input[name='user_name']").val(result.user_name);
                 $("#writeForm input[name='nick_name']").val(result.nick_name);
+                $("#writeForm input[name='email']").val(result.email);
+                $("#writeForm input[name='<?=$token_name?>']").val('<?=$token_hash?>');
+
                 /* $("#writeForm select[name='roleId'] option:eq("+result.roleId+")").attr("selected", "selected"); */
                 $("#writeForm select[name='role_id']").val(result.role_id);
             },
             error: function(request,status,error)
             {
-                swal("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
             },
             complete: function(){
 

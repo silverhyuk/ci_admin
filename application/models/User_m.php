@@ -86,4 +86,39 @@ class User_m extends CI_Model {
         $result = $query->row();
         return $result->total_count;
     }
+    /**
+     * 회원 상세보기 가져오기
+     *
+     * @param string $table 게시판 테이블
+     * @param string $id 게시물 번호
+     * @return array
+     */
+    function get_view($user_id) {
+        $sql = "SELECT * FROM ci_user WHERE user_id = '" . $user_id . "'";
+        $query = $this -> db -> query($sql);
+        // 게시물 내용 반환
+        $result = $query -> row();
+        return $result;
+
+    }
+    /**
+     * 회원 수정
+     *
+     * @param array $arrays 테이블 명, 게시물 번호, 게시물 제목, 게시물 내용
+     * @return boolean 성공 여부
+     */
+    function modify_user($arrays) {
+        $modify_array = array(
+            'password' => $arrays['password'],
+            'email' => $arrays['email'],
+            'user_name' => $arrays['user_name'],
+            'nick_name' => $arrays['nick_name'],
+            'role_id' => $arrays['role_id']
+        );
+        $where = array(
+            'user_id' => $arrays['user_id']
+        );
+        $result = $this->db->update('ci_user', $modify_array, $where);
+        return $result;
+    }
 }

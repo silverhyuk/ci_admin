@@ -35,6 +35,8 @@
     <script src="<?=base_url();?>template/bower_components/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap 3.3.7 -->
     <script src="<?=base_url();?>template/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- jQuery validation -->
+    <script src="<?=base_url();?>template/bower_components/jquery-validation/dist/jquery.validate.js"></script>
     <!-- Toastr -->
     <script src="<?=base_url();?>template/bower_components/toastr/build/toastr.min.js"></script>
     <!-- SlimScroll -->
