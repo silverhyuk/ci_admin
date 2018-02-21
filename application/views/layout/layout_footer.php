@@ -1,8 +1,8 @@
 <footer class="main-footer">
     <div class="pull-right hidden-xs">
-        <b>Version</b> 2.4.2
+        <b>Version</b> 1.0.0
     </div>
-    <strong>Copyright &copy; 2014-2016 <a href="https://">Studio</a>.</strong> All rights
+    <strong>Copyright &copy; 2018 <a href="https://">silverhyuk</a>.</strong> All rights
     reserved.
     <?php
     if($this->session->flashdata('message')){

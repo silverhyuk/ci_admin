@@ -9,6 +9,14 @@
 ?>
 <script>
     $(document).ready(function () {
+        //Menu
+        $("#side-menu > .sidebar-menu > li").removeClass('active');
+        $("#side-menu > .sidebar-menu > li").removeClass('menu-open');
+        $("#side-menu > .treeview-menu > li").removeClass('active');
+        $("#menu_01").addClass('active');
+        $("#menu_01").addClass('menu-open');
+        $("#menu_01_02").addClass('active');
+
         $("#search_btn").click(function() {
             if ($("#q").val() == '') {
                 //alert("검색어를 입력하세요!");

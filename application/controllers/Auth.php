@@ -27,8 +27,12 @@ class Auth extends MY_Controller {
     	) {
             $sessionUserArray = array(
                 'is_login'=> true,
-                'user_name'=> $user->username,
-                'nick_name'=> $user->nickname,
+                'user_id'=> $user->user_id,
+                'user_name'=> $user->user_name,
+                'nick_name'=> $user->nick_name,
+                'role_id'=> $user->role_id,
+                'role_type'=> $user->role_type,
+                'role_name'=> $user->role_name,
                 'email' => $user->email
             );
     		$this->session->set_userdata($sessionUserArray);

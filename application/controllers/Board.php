@@ -42,7 +42,7 @@ class Board extends MY_Controller {
         $totalCount = $this->board_m->get_total_count($table, $search_word);
         $config['total_rows'] = $totalCount;
         // 한 페이지에 표시할 게시물 수
-        $config['per_page'] = 10;
+        $config['per_page'] = 20;
         // 페이지 번호가 위치한 세그먼트
         $config['page_query_string'] = TRUE;
 

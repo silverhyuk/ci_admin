@@ -1,6 +1,6 @@
 <header class="main-header">
     <!-- Logo -->
-    <a href="<?=base_url();?>template/index2.html" class="logo">
+    <a href="<?=site_url('/');?>" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini"><b>A</b>LT</span>
         <!-- logo for regular state and mobile devices -->
@@ -36,7 +36,7 @@
                             <img src="<?=base_url();?>template/dist/img/if_bitty_bear_blake_37660.png" class="img-circle" alt="User Image">
 
                             <p>
-                                <?=$this->session->userdata('user_name');?>
+                                <?=$this->session->userdata('user_name');?>(<?=$this->session->userdata('role_name');?>)
                                 <small><?=$this->session->userdata('email');?></small>
                             </p>
                         </li>

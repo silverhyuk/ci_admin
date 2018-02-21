@@ -6,10 +6,19 @@
  * Time: 오후 10:57
  */
 ?>
+<script>
+    $(document).ready(function () {
+            // Menu
+            $("#side-menu > .sidebar-menu > li").removeClass('active');
+            $("#side-menu > .sidebar-menu > li").removeClass('menu-open');
+            $("#side-menu > .treeview-menu > li").removeClass('active');
+            $("#menu_00").addClass('active');
+        });
+</script>
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        Blank page
+        Main page
         <small>it all starts here</small>
     </h1>
     <ol class="breadcrumb">
