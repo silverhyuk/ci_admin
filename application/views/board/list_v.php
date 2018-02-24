@@ -115,7 +115,7 @@
                          <?php echo $pagination;?>
                     </div>
                     <div class="pull-right">
-                        <a href="<?=site_url('/board/write').'?table='.$table ?>" class="btn btn-primary">쓰기</a>
+                        <a href="<?=site_url('/board/write').'?table='.$table ?>" class="btn btn-sm btn-primary">쓰기</a>
                     </div>
                 </div>
             </div>

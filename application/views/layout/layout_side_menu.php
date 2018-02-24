@@ -31,7 +31,7 @@
                 </a>
                 <ul class="treeview-menu">
                     <li id="menu_02_01"><a href="<?=site_url('/user/lists')?>"><i class="fa fa-circle-o"></i> 사용자관리</a></li>
-                    <li id="menu_02_01"><a href="#"><i class="fa fa-circle-o"></i> 식당관리</a></li>
+                    <li id="menu_02_02"><a href="<?=site_url('/store/lists')?>"><i class="fa fa-circle-o"></i> 상점관리</a></li>
                 </ul>
             </li>
             <?php } ?>

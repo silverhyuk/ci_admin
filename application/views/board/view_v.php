@@ -56,9 +56,9 @@
         <div class="box-footer">
             <div class="no-margin pull-right">
                 <a href="<?=site_url('/board/lists').'?table='.$table.'&per_page='.$per_page ?>" class="btn  btn-sm btn-primary">목록 </a>
-                <?php if($views -> user_id === $this->session->userdata('nick_name')){ ?>
+                <?php if($views -> user_id === $this->session->userdata('user_id')){ ?>
                     <a href="<?=site_url('/board/modify').'?table='.$table.'&board_id='.$board_id ?>" class="btn btn-sm btn-warning"> 수정 </a>
-                    <button id="delete_btn" class="btn btn-sm btn-danger"> 삭제 </button>
+                    <button id="delete_btn" class="btn btn-sm btn-warning"> 삭제 </button>
                 <?php } ?>
             </div>
         </div>

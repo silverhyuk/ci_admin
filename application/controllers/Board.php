@@ -218,7 +218,7 @@ class Board extends MY_Controller {
 
             $writer_id = $this->board_m->writer_check($table, $board_id);
 
-            if( $writer_id->user_id != $this->session->userdata('nick_name') ){
+            if( $writer_id->user_id != $this->session->userdata('user_id') ){
                 alert('본인이 작성한 글이 아닙니다.', site_url('/board/view') . '?table=' . $table . '&board_id='.$board_id);
                 exit;
             }

@@ -75,8 +75,8 @@
             </div>
             <div class="box-footer">
                 <div class="no-margin pull-right">
-                    <button type="button" class="btn btn-primary" id="write_btn"> 수정 </button>
-                    <button type="button" class="btn" id="cancel_btn" onclick="history.back();">취소</button>
+                    <button type="button" class="btn  btn-sm btn-primary" id="write_btn"> 수정 </button>
+                    <button type="button" class="btn btn-sm" id="cancel_btn" onclick="history.back();">취소</button>
                 </div>
             </div>
         </form>
