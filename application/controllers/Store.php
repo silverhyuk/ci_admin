@@ -172,4 +172,16 @@ class Store extends MY_Controller {
             echo json_encode (array('result'=>'F')) ;
         }
     }
+
+    /**
+     * 게시물 상세 보기
+     */
+    function detail() {
+        // 게시판 이름과 게시물 번호에 해당하는 게시물 가져오기
+
+        $store_id = $this->input->get('store_id');
+        log_message('debug', '$store_id : '. $store_id);
+        $data['result'] = $this -> store_m -> getView($store_id);
+        $this->load->template('store/detail_v', $data);
+    }
 }

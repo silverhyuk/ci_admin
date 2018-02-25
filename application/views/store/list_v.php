@@ -209,7 +209,8 @@ $token_hash = $this->security->get_csrf_hash();
                             ?>
                             <tr>
                                 <th scope="row"><?php echo $last_num--; ?></th>
-                                <td><?php echo $lt->store_name; ?></td>
+                                <td><a rel="external"
+                                       href="<?=site_url('/store/detail').'?store_id='.$lt->store_id;?>"><?php echo $lt->store_name; ?></a></td>
                                 <td><?php echo $lt->store_type_name; ?></td>
                                 <td><?php echo $lt->status_name; ?></td>
                                 <td>
