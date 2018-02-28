@@ -13,6 +13,7 @@ class Store extends MY_Controller {
         parent::_require_admin();
         $this -> load -> database();
         $this -> load -> model('store_m');
+        $this -> load -> model('menu_m');
         $this -> load -> helper(array('url','date'));
     }
 
@@ -181,7 +182,69 @@ class Store extends MY_Controller {
 
         $store_id = $this->input->get('store_id');
         log_message('debug', '$store_id : '. $store_id);
-        $data['result'] = $this -> store_m -> getView($store_id);
+
+        $data = $this->getMenuList($store_id);
+        $data['store_id'] = $store_id;
+        $data['store_info'] = $this -> store_m -> getView($store_id);
         $this->load->template('store/detail_v', $data);
+    }
+    public function getMenuList($store_id)
+    {
+
+        /*페이지 네이션 설정*/
+        $this->load->library('pagination');
+        // 페이징 주소
+        $config['base_url'] = site_url('/store/detail');
+        // 게시물 전체 개수
+        $totalCount = $this->menu_m->getMenuTotalCount($store_id);
+        $config['total_rows'] = $totalCount;
+        // 한 페이지에 표시할 게시물 수
+        $config['per_page'] = 20;
+        // 페이지 번호가 위치한 세그먼트
+        $config['page_query_string'] = TRUE;
+
+
+        //페이징 디자인 변경
+        $config['full_tag_open'] = '<ul class="pagination pagination-sm no-margin ">';
+        $config['full_tag_close'] = '</ul>';
+        $config['first_link'] = '&laquo;&laquo;';
+        $config['first_tag_open'] = '<li>';
+        $config['first_tag_close'] = '</li>';
+        $config['prev_link'] = '&laquo;';
+        $config['prev_tag_open'] = '<li>';
+        $config['prev_tag_close'] = '</li>';
+        $config['next_link'] = '&raquo;';
+        $config['next_tag_open'] = '<li>';
+        $config['next_tag_close'] = '</li>';
+        $config['last_link'] = '&raquo;&raquo;';
+        $config['last_tag_open'] = '<li>';
+        $config['last_tag_close'] = '</li>';
+        $config['num_tag_open'] = '<li>';
+        $config['num_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="active"><a href="#">';
+        $config['cur_tag_close'] = '</a></li>';
+
+
+        // 페이지네이션 초기화
+        $this->pagination->initialize($config);
+        // 페이지 링크를 생성하여 view에서 사용하 변수에 할당
+        $data['pagination'] = $this->pagination->create_links();
+
+        // 게시물 목록을 불러오기 위한 offset, limit 값 가져오기
+        $per_page = $this->input->get('per_page');
+        if(empty($this->input->get('per_page')) === true){
+            $per_page = 0;
+        }
+        if ($per_page > 1) {
+            $start = (($per_page / $config['per_page'])) * $config['per_page'];
+        } else {
+            $start = 0;
+        }
+        $limit = $config['per_page'];
+        $data['list'] = $this->menu_m->getMenuList($store_id, $start, $limit);
+        $data['per_page'] = $per_page;
+        $data['last_num'] = $totalCount - $per_page;
+
+        return $data;
     }
 }
