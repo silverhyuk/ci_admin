@@ -105,4 +105,20 @@ class Menu extends MY_Controller {
             echo json_encode (array('result'=>'F')) ;
         }
     }
+    /**
+     * 게시물 삭제
+     */
+    function delete(){
+        $menu_id = $this->input->get('menu_id');
+        if ( empty($menu_id) !== TRUE && $this->session->userdata('is_login') === TRUE ) {
+            $result = $this->menu_m->deleteMenu($menu_id);
+            if($result){
+                $this->session->set_flashdata('message', '삭제 되었습니다.');
+                echo json_encode (array('result'=>'S')) ;
+            }else{
+                $this->session->set_flashdata('message', '삭제 되지 않았습니다.');
+                echo json_encode (array('result'=>'F')) ;
+            }
+        }
+    }
 }

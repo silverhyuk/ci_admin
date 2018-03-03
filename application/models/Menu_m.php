@@ -96,4 +96,18 @@ class Menu_m extends CI_Model {
         $result = $this->db->update('ci_menu', $modify_array, $where);
         return $result;
     }
+
+    /**
+     * 메뉴 삭제
+     *
+     * @param array $arrays 테이블 명, 게시물 번호, 게시물 제목, 게시물 내용
+     * @return boolean 성공 여부
+     */
+    function deleteMenu($deleteMenuId) {
+        $where = array(
+            'menu_id' => $deleteMenuId
+        );
+        $result = $this->db->delete('ci_menu', $where);
+        return $result;
+    }
 }

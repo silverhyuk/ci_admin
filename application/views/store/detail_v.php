@@ -134,6 +134,28 @@ $token_hash = $this->security->get_csrf_hash();
         $('#write_submit_btn').text("수정");
         $('#writeContainer').modal();
     }
+    function deleteExec(menuSeqId){
+        if(confirm('정말로 삭제 하시겠습니까?') === true){
+            $.ajax({
+                type: "GET",
+                url: "<?=site_url('/menu/delete')?>",
+                dataType:"json",
+                cache: false,
+                data: "menu_id=" + menuSeqId,
+                success: function(data){
+                    window.location.reload();
+                },
+                error: function(request,status,error)
+                {
+                    alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                },
+                complete: function(){
+
+                }
+            });
+        }
+
+    }
 </script>
 
 <!-- Content Header (Page header) -->
@@ -204,7 +226,12 @@ $token_hash = $this->security->get_csrf_hash();
                                         <?php echo mdate("%Y-%m-%d", human_to_unix($lt->reg_date)); ?>
                                     </time>
                                 </td>
-                                <td><button  class="btn btn-default" onclick="javascript:modifyForm(<?php echo $lt->menu_id; ?>);"><i class="fa fa-edit"></i></button></td>
+                                <td>
+                                    <button  class="btn btn-default" onclick="javascript:modifyForm(<?php echo $lt->menu_id; ?>);"><i class="fa fa-edit"></i>
+                                    </button>
+                                    <button  class="btn btn-default" onclick="javascript:deleteExec(<?php echo $lt->menu_id; ?>);"><i class="fa fa-trash"></i>
+                                    </button>
+                                </td>
                             </tr>
                             <?php
                         }
