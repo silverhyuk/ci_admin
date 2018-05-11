@@ -17,14 +17,31 @@ class Board_m extends CI_Model {
         $sword = '';
         if ($search_word != '') {
             // 검색어 있을 경우
-            $sword = ' WHERE subject like "%' . $search_word . '%" or contents like "%' . $search_word . '%" ';
+            $sword = ' WHERE brd.subject like "%' . $search_word . '%" or brd.contents like "%' . $search_word . '%" ';
         }
         $limit_query = '';
         if ($limit != '' OR $offset != '') {
             // 페이징이 있을 경우 처리
             $limit_query = ' LIMIT ' . $offset . ', ' . $limit;
         }
-        $sql = "SELECT * FROM " . $table . $sword . " ORDER BY board_id DESC " . $limit_query;
+        $sql = " SELECT 	brd.board_id, ";
+        $sql .= " brd.board_pid, ";
+        $sql .= " brd.user_id,  ";
+        $sql .= " brd.subject,  ";
+        $sql .= " brd.contents,  ";
+        $sql .= " brd.hits,  ";
+        $sql .= " brd.reg_date, ";
+        $sql .= " usr.user_id,  ";
+        $sql .= " usr.user_name,  ";
+        $sql .= " usr.nick_name, ";
+        $sql .= " usr.email,  ";
+        $sql .= " usr.password,  ";
+        $sql .= " usr.role_id ";
+        $sql .= " FROM ci_board brd ";
+        $sql .= " LEFT JOIN ci_user usr ";
+        $sql .= " ON brd.user_id = usr.user_id ";
+        $sql .= $sword . " ORDER BY brd.board_id DESC " . $limit_query;
+
         $query = $this -> db -> query($sql);
         if ($type == 'count') {
             $result = $query -> num_rows();
@@ -59,7 +76,23 @@ class Board_m extends CI_Model {
         $sql0 = "UPDATE " . $table . " SET hits = hits + 1 WHERE board_id='" . $id . "'";
         $this -> db -> query($sql0);
 
-        $sql = "SELECT * FROM " . $table . " WHERE board_id = '" . $id . "'";
+        $sql = " SELECT brd.board_id, ";
+        $sql .= " brd.board_pid, ";
+        $sql .= " brd.user_id,  ";
+        $sql .= " brd.subject,  ";
+        $sql .= " brd.contents,  ";
+        $sql .= " brd.hits,  ";
+        $sql .= " brd.reg_date, ";
+        $sql .= " usr.user_id,  ";
+        $sql .= " usr.user_name,  ";
+        $sql .= " usr.nick_name, ";
+        $sql .= " usr.email,  ";
+        $sql .= " usr.password,  ";
+        $sql .= " usr.role_id ";
+        $sql .= " FROM ci_board brd ";
+        $sql .= " LEFT JOIN ci_user usr ";
+        $sql .= " ON brd.user_id = usr.user_id ";
+        $sql .= " WHERE brd.board_id = '" . $id . "'";
         $query = $this -> db -> query($sql);
 
         // 게시물 내용 반환

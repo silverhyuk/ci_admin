@@ -8,6 +8,14 @@
 ?>
 <script type="application/javascript">
     $(document).ready(function () {
+
+        $("#side-menu > .sidebar-menu > li").removeClass('active');
+        $("#side-menu > .sidebar-menu > li").removeClass('menu-open');
+        $("#side-menu > .treeview-menu > li").removeClass('active');
+        $("#menu_01").addClass('active');
+        $("#menu_01").addClass('menu-open');
+        $("#menu_01_02").addClass('active');
+
         $('#delete_btn').on('click', function(){
             if(confirm('정말로 삭제 하시겠습니까?')){
                 location.href = '<?=site_url('/board/delete').'?table='.$table.'&board_id='.$board_id ?>';
@@ -56,9 +64,9 @@
         <div class="box-footer">
             <div class="no-margin pull-right">
                 <a href="<?=site_url('/board/lists').'?table='.$table.'&per_page='.$per_page ?>" class="btn  btn-sm btn-primary">목록 </a>
-                <?php if($views -> user_id === $this->session->userdata('nick_name')){ ?>
+                <?php if($views -> user_id === $this->session->userdata('user_id')){ ?>
                     <a href="<?=site_url('/board/modify').'?table='.$table.'&board_id='.$board_id ?>" class="btn btn-sm btn-warning"> 수정 </a>
-                    <button id="delete_btn" class="btn btn-sm btn-danger"> 삭제 </button>
+                    <button id="delete_btn" class="btn btn-sm btn-warning"> 삭제 </button>
                 <?php } ?>
             </div>
         </div>

@@ -70,10 +70,10 @@
 
                     <div class="box-tools">
                         <div class="input-group input-group-sm" style="width: 150px;">
-                                <input type="text" name="table_search" class="form-control pull-right" placeholder="Search" id="q" onkeypress="board_search_enter(document.q);">
-                                <div class="input-group-btn">
-                                    <button type="button" class="btn btn-default" id="search_btn" ><i class="fa fa-search"></i></button>
-                                </div>
+                            <input type="text" name="table_search" class="form-control pull-right" placeholder="Search" id="q" onkeypress="board_search_enter(document.q);">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default" id="search_btn" ><i class="fa fa-search"></i></button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -112,10 +112,10 @@
                 <!-- /.box-body -->
                 <div class="box-footer">
                     <div class="text-center">
-                         <?php echo $pagination;?>
+                        <?php echo $pagination;?>
                     </div>
                     <div class="pull-right">
-                        <a href="<?=site_url('/board/write').'?table='.$table ?>" class="btn btn-primary">쓰기</a>
+                        <a href="<?=site_url('/board/write').'?table='.$table ?>" class="btn btn-sm btn-primary">쓰기</a>
                     </div>
                 </div>
             </div>
