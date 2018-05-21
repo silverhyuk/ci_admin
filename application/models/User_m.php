@@ -44,8 +44,8 @@ class User_m extends CI_Model {
         $sql .= "usr.role_id,  ";
         $sql .= "usr.reg_date, ";
         $sql .= "rol.role_id,  ";
-        $sql .= "rol.role_name,  ";
-        $sql .= "rol.role_type  ";
+	    $sql .= "rol.role_name,  ";
+	    $sql .= "rol.role_type  ";
         $sql .= "FROM ci_user AS usr ";
         $sql .= " LEFT JOIN ci_role AS rol ";
         $sql .= " ON usr.role_id =  rol.role_id " ;

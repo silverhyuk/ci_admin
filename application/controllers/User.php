@@ -203,7 +203,7 @@ class User extends MY_Controller {
 
             $writer_id = $this->user_m->writer_check($table, $user_id);
 
-            if( $writer_id->user_id != $this->session->userdata('nick_name') ){
+            if( $writer_id->user_id != $this->session->userdata('user_id') ){
                 alert('본인이 작성한 글이 아닙니다.', site_url('/user/view') . '?table=' . $table . '&user_id='.$user_id);
                 exit;
             }
